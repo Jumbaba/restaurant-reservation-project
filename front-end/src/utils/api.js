@@ -11,6 +11,7 @@ const API_BASE_URL =
 /**
  * Defines the default headers for these functions to work with `json-server`
  */
+
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
 

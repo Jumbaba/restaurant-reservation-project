@@ -29,14 +29,15 @@ function hasValidFields(req, res, next) {
 
   if (!first_name || first_name.trim()==="") errors.push("first_name is missing or empty");
   if (!last_name || last_name.trim()==="") errors.push("last_name is missing or empty");
-  if (!mobile_number || mobile_number.trim()==="") errors.push("mobile_number is missing or empty")
-  if (!reservation_date || !dateFormat.test(reservation_date)) errors.push("reservation_date is missing or empty")
-  if (!reservation_time || !timeFormat.test(reservation_time)) errors.push("reservation_time is missing or empty")
-  if (!people || typeof people !== "number" || people < 1) errors.push("people is missing or empty")
-  if (errors.length > 0) next({status:400, message:errors.join(", ")})
+  if (!mobile_number || mobile_number.trim()==="") errors.push("mobile_number is missing or empty");
+  if (!reservation_date || !dateFormat.test(reservation_date)) errors.push("reservation_date is missing or empty");
+  if (!reservation_time || !timeFormat.test(reservation_time)) errors.push("reservation_time is missing or empty");
+  if (!people || typeof people !== "number" || people < 1) errors.push("people is missing or empty");
+  if (new Date(reservation_date).getDay() == 1) errors.push("The reservation date is a Tuesday as the restaurant is closed on Tuesdays.");
+  if (new Date(`${reservation_date} ${reservation_time}`).getTime() / 1000 < new Date().getTime() / 1000) errors.push("The reservation date is in the past. Only future reservations are allowed.");
+  if (errors.length > 0) next({status:400, message:errors.join(", ")});
   
   next();
-
 }
 
 module.exports = {
