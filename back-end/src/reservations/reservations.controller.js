@@ -34,7 +34,15 @@ function hasValidFields(req, res, next) {
   if (!reservation_time || !timeFormat.test(reservation_time)) errors.push("reservation_time is missing or empty");
   if (!people || typeof people !== "number" || people < 1) errors.push("people is missing or empty");
   if (new Date(reservation_date).getDay() == 1) errors.push("The reservation date is a Tuesday as the restaurant is closed on Tuesdays.");
-  if (new Date(`${reservation_date} ${reservation_time}`).getTime() / 1000 < new Date().getTime() / 1000) errors.push("The reservation date is in the past. Only future reservations are allowed.");
+  if (new Date(`${reservation_date} ${reservation_time}`).getTime() < new Date().getTime()) errors.push("The reservation date is in the past. Only future reservations are allowed.");
+  
+  const reservationTimeInMinutes = new Date(`${reservation_date} ${reservation_time}`).getHours() * 60 + new Date(`${reservation_date} ${reservation_time}`).getMinutes();
+  const tenThirtyAM = (9 * 60) + 30;
+  const nineThirtyPM = (20 * 60) + 30;
+
+  if (reservationTimeInMinutes < tenThirtyAM + 60) errors.push("The reservation time is before 10:30 AM.");
+  if (reservationTimeInMinutes > nineThirtyPM + 60) errors.push("The reservation time is after 9:30 PM. The restaurant closes at 10:30 PM so you there won't be enough time to enjoy your meal.")
+
   if (errors.length > 0) next({status:400, message:errors.join(", ")});
   
   next();
