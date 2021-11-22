@@ -16,6 +16,4 @@ function App() {
   );
 }
 
-console.log("banana");
-
 export default App;
