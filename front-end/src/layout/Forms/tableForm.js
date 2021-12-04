@@ -7,7 +7,6 @@ export default function TableForm() {
   const [formData, setFormData] = useState({
     table_name: "",
     capacity: "",
-    status: true,
   });
 
   const [error, setError] = useState(null);

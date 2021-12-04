@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
+import { listReservations, deleteSeat, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import TablesTable from "./tablesTable";
 import ReservationsTable from "./reservationsTable";
 import { previous, next } from "../utils/date-time";
 import { useHistory } from "react-router-dom";
+import Tables from "./Tables";
 
 /**
  * Defines the dashboard page.
@@ -14,13 +14,11 @@ import { useHistory } from "react-router-dom";
  */
 
 function Dashboard({ date }) {
+  const history = useHistory();
+  
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-
   const [tables, setTables] = useState([]);
-  const [tablesError, setTablesError] = useState(null);
-
-  const history = useHistory();
 
   useEffect(loadDashboard, [date]);
 
@@ -30,18 +28,15 @@ function Dashboard({ date }) {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+    listTables().then(setTables);
     return () => abortController.abort();
   }
 
-  useEffect(loadTables);
+  const handleStatusChange = (event) => {
+    
 
-  function loadTables() {
-    const abortController = new AbortController();
-    setTablesError(null);
-    listTables(abortController.signal)
-      .then(setTables)
-      .catch(setTablesError);
-    return () => abortController.abort();
+
+
   }
 
   const handleClick = (event) => {
@@ -51,6 +46,10 @@ function Dashboard({ date }) {
       history.push(`/dashboard?date=${next(date)}`);
     if (event.target.id === "today") history.push(`/dashboard`);
   };
+
+  function onFinish(tableId) {
+    deleteSeat(tableId).then(loadDashboard).catch(setReservationsError);
+  }
 
   return (
     <main>
@@ -81,10 +80,9 @@ function Dashboard({ date }) {
         Next
       </button>
       
-      <ErrorAlert error={tablesError} />
-      <TablesTable tables={tables} />
       <ErrorAlert error={reservationsError} />
-      <ReservationsTable reservations={reservations}/>
+      <ReservationsTable reservations={reservations} />
+      <Tables onFinish={onFinish} tables={tables} />
 
     </main>
   );
