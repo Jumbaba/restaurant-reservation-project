@@ -106,16 +106,16 @@ function hasValidStatus(req, res, next) {
   next();
 }
 
-function updateStatus(req, res, next) {
-  const statusToBe = res.locals.status;
+// function updateStatus(req, res, next) {
+//   const statusToBe = res.locals.status;
 
-  const data = await reservationsService.updateStatus(reservation_id);
-  res.status(200).json({ data: { status: "" } });
-}
+//   const data = await reservationsService.updateStatus(reservation_id);
+//   res.status(200).json({ data: { status: "" } });
+// }
 
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [hasValidFields, asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reservationExists), read],
-  updateStatus: [asyncErrorBoundary(reservationExists), hasValidStatus, updateStatus],
+  // updateStatus: [asyncErrorBoundary(reservationExists), hasValidStatus, updateStatus],
 };

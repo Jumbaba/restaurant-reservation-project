@@ -16,11 +16,11 @@ const read = (reservation_id) => {
   return knex("reservations").where({ reservation_id: reservation_id }).first();
 };
 
-function updateStatus(reservation_id){
-  return knex("reservations").where({reservation_id:reservation_id}).update({
-    status: 
-  })
-}
+// function updateStatus(reservation_id){
+//   return knex("reservations").where({reservation_id:reservation_id}).update({
+//     status: 
+//   })
+// }
 
 module.exports = {
   list,
