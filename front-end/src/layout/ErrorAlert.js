@@ -12,11 +12,10 @@ function ErrorAlert({ error }) {
   return (
     error && (
       <div className="alert alert-danger m-2">
-        Error:
+        Error:{" "}
         <ul>
-          {" "}
-          {error.message.split(",").map((err) => (
-            <li>{err}</li>
+          {error.message.split(",").map((err, index) => (
+            <li key={index}>{err}</li>
           ))}
         </ul>
       </div>
