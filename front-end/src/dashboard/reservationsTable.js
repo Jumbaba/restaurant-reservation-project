@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
-export default function ReservationsTable({ reservations, handleStatusChange }) {
+export default function ReservationsTable({
+  reservations,
+  handleStatusChange,
+}) {
   return (
     <table className="table">
       <thead>
@@ -24,11 +27,18 @@ export default function ReservationsTable({ reservations, handleStatusChange }) 
             <td>{reservation.reservation_date}</td>
             <td>{reservation.reservation_time}</td>
             <td>{reservation.people}</td>
-            <td>{reservation.status}</td>
+            <td data-reservation-id-status={reservation.reservation_id}>
+              {reservation.status}
+            </td>
             <td>
               {reservation.status == "booked" ? (
                 <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-                  <button className="btn btn-secondary" onClick={handleStatusChange}>Seat</button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={handleStatusChange}
+                  >
+                    Seat
+                  </button>
                 </Link>
               ) : null}
             </td>

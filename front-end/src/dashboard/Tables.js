@@ -1,6 +1,7 @@
 import React from "react";
+import ErrorAlert from "../layout/ErrorAlert";
 
-function Tables({tables = [], onFinish})  {
+function Tables({tables = [], onFinish, tablesError})  {
 
   const finishBtn = ({ target }) => {
     const tableId = target.dataset.tableIdFinish;
@@ -14,6 +15,7 @@ function Tables({tables = [], onFinish})  {
 
   return (
     <table className="table">
+      <ErrorAlert error={tablesError} />
       <thead>
         <tr className="reservations-head">
           <th>Tables</th>

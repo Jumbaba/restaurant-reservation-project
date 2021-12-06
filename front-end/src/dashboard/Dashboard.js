@@ -15,10 +15,11 @@ import Tables from "./Tables";
 
 function Dashboard({ date }) {
   const history = useHistory();
-  
+
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
+  const [tablesError, setTablesError] = useState(null);
 
   useEffect(loadDashboard, [date]);
 
@@ -28,16 +29,11 @@ function Dashboard({ date }) {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-    listTables().then(setTables);
+    listTables().then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
-  const handleStatusChange = (event) => {
-    
-
-
-
-  }
+  const handleStatusChange = (event) => {};
 
   const handleClick = (event) => {
     if (event.target.id === "previous")
@@ -57,7 +53,7 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
-      
+
       <button
         className="btn btn-success mr-2 mb-1"
         id="today"
@@ -79,11 +75,17 @@ function Dashboard({ date }) {
       >
         Next
       </button>
-      
-      <ErrorAlert error={reservationsError} />
-      <ReservationsTable reservations={reservations} />
-      <Tables onFinish={onFinish} tables={tables} />
 
+      <ErrorAlert error={reservationsError} />
+      <ReservationsTable
+        handleStatusChange={handleStatusChange}
+        reservations={reservations}
+      />
+      <Tables
+        onFinish={onFinish}
+        tables={tables}
+        tablesError={tablesError}
+      />
     </main>
   );
 }
