@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { listReservations, deleteSeat, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import ReservationsTable from "./reservationsTable";
+import ReservationsTable from "./ReservationsTable";
 import { previous, next } from "../utils/date-time";
 import { useHistory } from "react-router-dom";
 import Tables from "./Tables";
@@ -33,7 +33,6 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-  const handleStatusChange = (event) => {};
 
   const handleClick = (event) => {
     if (event.target.id === "previous")
@@ -78,8 +77,8 @@ function Dashboard({ date }) {
 
       <ErrorAlert error={reservationsError} />
       <ReservationsTable
-        handleStatusChange={handleStatusChange}
         reservations={reservations}
+        loadDashboard ={loadDashboard}
       />
       <Tables
         onFinish={onFinish}

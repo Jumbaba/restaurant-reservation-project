@@ -8,6 +8,7 @@ import useQuery from "../utils/useQuery.js";
 import TableForm from "./Forms/tableForm";
 import SeatForm from "./Forms/seatForm";
 import Search from "../search/Search";
+import EditReservation from "../EditReservation";
 
 
 function Routes() {
@@ -24,6 +25,9 @@ function Routes() {
       </Route>
       <Route exact={true} path="/reservations/:reservation_id/seat">
         <SeatForm />
+      </Route>
+      <Route exact path='/reservations/:reservation_id/edit'>
+        <EditReservation />
       </Route>
       <Route exact={true} path="/reservations/new">
         <ReservationForm />

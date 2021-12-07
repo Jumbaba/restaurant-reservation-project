@@ -1,11 +1,10 @@
-const { table } = require("../db/connection");
 const knex = require("../db/connection");
-const service = require("../reservations/reservations.service");
 
 function list(date) {
   return knex("reservations")
     .where({ reservation_date: date })
     .whereNot({status:"finished"})
+    .whereNot({status: "cancelled"})
     .orderBy("reservation_time");
 }
 
@@ -27,6 +26,23 @@ async function updateStatus(reservation_id, status) {
     .then((rows) => rows[0]);
 
 }
+
+async function update(reservation_id, newReservation) {
+  return knex("reservations")
+    .returning("*")
+    .where({ "reservation_id":reservation_id })
+    .update(newReservation)
+    .then((rows) => rows[0]);
+}
+
+
+// function updateStatus(reservation_id, newStatus) {
+//   return knex("reservations")
+//     .select("*")
+//     .where({ reservation_id })
+//     .update(newStatus, "*")
+//     .then((records) => records[0]);
+// }
 
 // async function destroy(reservation_id) {
 //   return knex("reservations")
@@ -53,4 +69,5 @@ module.exports = {
   updateStatus,
   // destroy,
   search,
+  update,
 };
