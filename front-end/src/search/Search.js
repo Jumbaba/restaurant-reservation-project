@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { searchReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -7,6 +7,8 @@ import SearchTable from "./SearchTable.js";
 function Search() {
   const history = useHistory();
   const [mobileNumber, setMobileNumber] = useState("");
+  const [phone, setPhone] = useState("");
+  const [refresh, setRefresh] = useState(false);
   const [error, setError] = useState(null);
   const [results, setResults] = useState([]);
   const [display, setDisplay] = useState(false);
@@ -17,11 +19,22 @@ function Search() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    searchReservations(mobileNumber)
-      .then(setResults)
-      .then(() => setDisplay(true))
-      .catch(setError);
+    setRefresh(true);
+    setPhone(mobileNumber);
+    search();
   };
+
+  const search = () => {
+    if (phone) {
+      searchReservations(phone)
+        .then(setResults)
+        .then(() => setRefresh(false))
+        .then(() => setDisplay(true))
+        .catch(setError);
+    }
+  };
+
+  useEffect(search, [refresh, phone]);
 
   function cancelHandler() {
     history.goBack();
@@ -30,11 +43,15 @@ function Search() {
   const searchResults = results?.length ? (
     <div>
       {results.map((reservation) => (
-        <SearchTable reservation={reservation} />
+        <SearchTable
+          reservation={reservation}
+          setError={setError}
+          setRefresh={setRefresh}
+        />
       ))}
     </div>
   ) : (
-    <p>{`No reservations found for ${mobileNumber}`}</p>
+    <p>{`No reservations found for mobile number ${mobileNumber}`}</p>
   );
 
   return (

@@ -46,7 +46,7 @@ function hasValidFields(req, res, next) {
     errors.push("reservation_time is missing or empty");
   if (!people || typeof people !== "number" || people < 1)
     errors.push("people is missing or empty");
-  if (new Date(reservation_date).getDay() == 1)
+  if (new Date(reservation_date).getDay() === 1)
     errors.push(
       "The reservation date is a Tuesday as the restaurant is closed on Tuesdays."
     );
@@ -82,6 +82,7 @@ function hasValidFields(req, res, next) {
 
 const hasValidStatus = (req, res, next) => {
   const { status } = req.body.data;
+  
   const validStatus = ["seated", "booked", "finished", "cancelled"];
   const errors = [];
   if (!validStatus.includes(status)) {
@@ -143,12 +144,19 @@ async function create(req, res, next) {
 }
 
 async function updateStatus(req, res, next) {
-  console.log("updateStatus");
   const { status } = req.body.data;
   const { reservation_id } = req.params;
 
-  console.log(status + " " + reservation_id);
   const data = await service.updateStatus(Number(reservation_id), status);
+
+  res.json({ data });
+}
+
+async function update(req, res, next) {
+  const newReservation = req.body.data;
+  const { reservation_id } = req.params;
+
+  const data = await service.update(Number(reservation_id), newReservation);
 
   res.json({ data });
 }
@@ -162,4 +170,9 @@ module.exports = {
     hasValidStatus,
     asyncErrorBoundary(updateStatus),
   ],
+  update: [
+    hasValidFields,
+    asyncErrorBoundary(reservationExists),
+    asyncErrorBoundary(update),
+  ]
 };
