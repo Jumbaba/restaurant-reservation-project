@@ -117,3 +117,26 @@
    };
    return await fetchJson(url, options, {});
  }
+
+ export async function updateStatus(reservation_id, status) {
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);
+  const options = {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({ data: status }),
+  };
+  return await fetchJson(url, options, {});
+}
+
+ export async function searchReservations(mobileNumber) {
+   console.log(mobileNumber)
+  const url = new URL(
+    `${API_BASE_URL}/reservations?mobile_number=${mobileNumber}`
+  );
+
+  const options = {
+    method: 'GET',
+    headers,
+  };
+  return await fetchJson(url, options, {});
+}

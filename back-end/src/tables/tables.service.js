@@ -5,16 +5,16 @@ function list() {
   return knex("tables").orderBy("table_name");
 }
 
-function create(newTable) {
+async function create(newTable) {
   return knex("tables")
     .insert(newTable)
     .returning("*")
     .then((rows) => rows[0]);
 }
 
-const read = (table_id) => {
+function read(table_id) {
   return knex("tables").where({ table_id }).first();
-};
+}
 
 function update(table_id, reservation_id) {
   return knex.transaction(async (transaction) => {

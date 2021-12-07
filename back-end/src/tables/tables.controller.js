@@ -1,9 +1,8 @@
 const service = require("./tables.service");
 const reservationsService = require("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-const { table } = require("../db/connection");
 
-const tableExistsToDelete = async (req, res, next) => {
+async function tableExistsToDelete(req, res, next) {
   const { tableId } = req.params;
   const foundTable = await service.read(tableId);
 
@@ -23,9 +22,9 @@ const tableExistsToDelete = async (req, res, next) => {
     status: 404,
     message: `Table with ID ${tableId} not foundTable.`,
   });
-};
+}
 
-const validBodyProperties = (req, res, next) => {
+function validBodyProperties(req, res, next) {
   const data = req.body.data;
 
   if (!data) {
@@ -58,9 +57,9 @@ const validBodyProperties = (req, res, next) => {
   }
 
   next();
-};
+}
 
-const validUpdateBody = async (req, res, next) => {
+async function validUpdateBody(req, res, next) {
   if (!req.body.data) {
     return next({
       status: 400,
@@ -117,37 +116,37 @@ const validUpdateBody = async (req, res, next) => {
   }
 
   next();
-};
+}
 
-const create = async (req, res) => {
+async function create(req, res, next) {
   const newTable = {
     ...req.body.data,
   };
   const data = await service.create(newTable);
-  
+
   res.status(201).json({ data });
-};
+}
 
-const list = async (req, res) => {
+async function list(req, res, next) {
   const data = await service.list();
-  
-  res.json({ data });
-};
 
-const update = async (req, res) => {
+  res.json({ data });
+}
+
+async function update(req, res, next) {
   const table = res.locals.table;
   const reservation = res.locals.reservation;
 
   const data = await service.update(table.table_id, reservation.reservation_id);
-  
-  res.json({ data });
-};
 
-const destroy = async (req, res) => {
+  res.json({ data });
+}
+
+async function destroy(req, res, next) {
   const data = await service.destroy(res.locals.table);
 
   res.json({ data });
-};
+}
 
 module.exports = {
   list,

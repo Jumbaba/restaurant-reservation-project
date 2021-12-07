@@ -3,7 +3,7 @@ const service = require("./reservations.service");
 
 // Middleware
 
-const reservationExists = async (req, res, next) => {
+async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
   const foundReservation = await service.read(reservation_id);
   if (foundReservation) {
@@ -14,7 +14,7 @@ const reservationExists = async (req, res, next) => {
     status: 404,
     message: `Reservation with ID ${reservation_id} not found`,
   });
-};
+}
 
 function hasValidFields(req, res, next) {
   const { data } = req.body;
@@ -78,7 +78,7 @@ function hasValidFields(req, res, next) {
   if (errors.length) next({ status: 400, message: errors.join(", ") });
 
   next();
-};
+}
 
 const hasValidStatus = (req, res, next) => {
   const { status } = req.body.data;
@@ -102,48 +102,45 @@ const hasValidStatus = (req, res, next) => {
   next();
 };
 
-// const searchReservationExists = async (req, res, next) => {
-//   const { mobile_number } = req.query;
-//   const { date } = req.query;
+async function searchReservationExists(req, res, next) {
+  const { mobile_number } = req.query;
+  const { date } = req.query;
 
-//   if (!mobile_number && date) {
-//     res.locals.reservations = await service.list(date);
-//     return next();
-//   }
+  if (!mobile_number && date) {
+    res.locals.reservations = await service.list(date);
+    return next();
+  }
 
-//   if (mobile_number && !date) {
-//     const foundReservations = await service.searchNum(mobile_number);
-//     if (foundReservations) {
-//       res.locals.reservations = foundReservations;
-//       return next();
-//     } else {
-//       res.locals.reservations = [];
-//       return next();
-//     }
-//   }
-// };
+  if (mobile_number && !date) {
+    const foundReservations = await service.search(mobile_number);
+    if (foundReservations) {
+      res.locals.reservations = foundReservations;
+      return next();
+    } else {
+      res.locals.reservations = [];
+      return next();
+    }
+  }
+}
 
 // Methods
 
-const read = (req, res) => {
+function read(req, res, next) {
   const reservation = res.locals.reservation;
 
   res.json({ data: reservation });
-};
+}
 
-async function list(req, res, next) {
-  const { date } = req.query;
-  const data = await service.list(date);
-
-  res.json({ data });
-};
+async function list(req, res) {
+  res.json({ data: res.locals.reservations });
+}
 
 async function create(req, res, next) {
   const newReservation = req.body.data;
   const data = await service.create(newReservation);
 
   res.status(201).json({ data });
-};
+}
 
 async function updateStatus(req, res, next) {
   console.log("updateStatus");
@@ -153,13 +150,11 @@ async function updateStatus(req, res, next) {
   console.log(status + " " + reservation_id);
   const data = await service.updateStatus(Number(reservation_id), status);
 
-
   res.json({ data });
-};
+}
 
 module.exports = {
-  // list: [asyncErrorBoundary(searchReservationExists), asyncErrorBoundary(list)],
-  list: [asyncErrorBoundary(list)],
+  list: [asyncErrorBoundary(searchReservationExists), asyncErrorBoundary(list)],
   create: [hasValidFields, asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reservationExists), read],
   updateStatus: [

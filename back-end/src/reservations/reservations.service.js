@@ -9,7 +9,7 @@ function list(date) {
     .orderBy("reservation_time");
 }
 
-function create(newReservation) {
+async function create(newReservation) {
   return knex("reservations")
     .insert(newReservation, "*")
     .then((rows) => rows[0]);
@@ -19,7 +19,7 @@ function read(reservation_id) {
   return knex("reservations").where({ reservation_id: reservation_id }).first();
 }
 
-function updateStatus(reservation_id, status) {
+async function updateStatus(reservation_id, status) {
   return knex("reservations")
     .returning("*")
     .where({ "reservation_id":reservation_id })
@@ -28,17 +28,29 @@ function updateStatus(reservation_id, status) {
 
 }
 
-function destroy(reservation_id) {
+// async function destroy(reservation_id) {
+//   return knex("reservations")
+//     .where({ reservation_id })
+//     .update("status", "finished")
+//     .then((rows) => rows[0]);
+// }
+
+function search(mobile_number) {
   return knex("reservations")
-    .where({ reservation_id })
-    .update("status", "finished")
-    .then((rows) => rows[0]);
+    .whereRaw(
+      "translate(mobile_number, '() -', '') like ?",
+      `%${mobile_number.replace(/\D/g, "")}%`
+    )
+    .orderBy("reservation_date");
 }
+
+
 
 module.exports = {
   list,
   create,
   read,
   updateStatus,
-  destroy,
+  // destroy,
+  search,
 };
