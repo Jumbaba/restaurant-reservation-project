@@ -2,14 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { updateStatus } from "../utils/api";
 
-function SearchTable ({ reservation, setError, setRefresh }) {
+function SearchTable({ reservation, setError, setRefresh }) {
   const cancelReservation = ({ target }) => {
+    const abortController = new AbortController();
     const reservation_id = target.dataset.reservationIdCancel;
     const cancelConfirm = window.confirm(
       "Do you want to cancel this reservation?\n\nThis cannot be undone."
     );
     if (cancelConfirm) {
-      updateStatus(reservation_id, { status: "cancelled" })
+      updateStatus(
+        reservation_id,
+        { status: "cancelled" },
+        abortController.signal
+      )
         .then(() => setRefresh(true))
         .catch(setError);
     }
@@ -80,6 +85,6 @@ function SearchTable ({ reservation, setError, setRefresh }) {
       </div>
     </table>
   );
-};
+}
 
 export default SearchTable;

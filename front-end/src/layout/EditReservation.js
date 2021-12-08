@@ -20,8 +20,9 @@ function EditReservation() {
   const { reservation_id } = useParams();
 
   function loadReservation() {
+    const abortController = new AbortController()
     setError(null);
-    readReservation(reservation_id).then(setReservation).catch(setError);
+    readReservation(reservation_id, abortController.signal).then(setReservation).catch(setError);
   }
 
   useEffect(loadReservation, [reservation_id]);

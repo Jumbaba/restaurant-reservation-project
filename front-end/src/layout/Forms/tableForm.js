@@ -6,7 +6,7 @@ import ErrorAlert from "../ErrorAlert";
 export default function TableForm() {
   const [formData, setFormData] = useState({
     table_name: "",
-    capacity: "",
+    capacity: "1",
   });
 
   const [error, setError] = useState(null);
@@ -20,15 +20,22 @@ export default function TableForm() {
   function handleInputChange(event) {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [event.target.name]:
+        event.target.name === "capacity"
+          ? Number(event.target.value)
+          : event.target.value,
     });
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    createTable({
-      data: { ...formData, capacity: Number(formData.capacity) },
-    })
+    const abortController = new AbortController();
+    createTable(
+      {
+        data: { ...formData },
+      },
+      abortController.signal
+    )
       .then(() => history.push(`/`))
       .catch(setError);
   }

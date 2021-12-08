@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import ErrorAlert from "../ErrorAlert";
 import { useEffect } from "react";
 
 export default function ReservationForm({
@@ -11,7 +10,6 @@ export default function ReservationForm({
   const history = useHistory();
 
   const [formData, setFormData] = useState({ ...initialState });
-  const [error, setError] = useState(null);
 
   function updateFormData(){
     setFormData({...initialState});
@@ -33,7 +31,6 @@ export default function ReservationForm({
 
   return (
     <>
-      <ErrorAlert error={error} />
       <form onSubmit={(event) => handleSubmit(event, formData)}>
         <div className="form-group">
           <label for="firstName">First Name</label>

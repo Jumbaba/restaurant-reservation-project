@@ -30,10 +30,11 @@ const SeatForm = () => {
 
   const handleSubmit = (error) => {
     error.preventDefault();
+    const abortController = new AbortController();
     if (tableId === 0) {
       return setError({ message: "Select a table from the list" });
     }
-    seatReservation(tableId, reservation_id)
+    seatReservation(tableId, reservation_id, abortController.signal)
       .then(() => history.push("/dashboard"))
       .catch(setError);
   };

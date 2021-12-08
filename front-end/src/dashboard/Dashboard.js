@@ -43,7 +43,8 @@ function Dashboard({ date }) {
   };
 
   function onFinish(tableId) {
-    deleteSeat(tableId).then(loadDashboard).catch(setReservationsError);
+    const abortController = new AbortController();
+    deleteSeat(tableId, abortController.signal).then(loadDashboard).catch(setReservationsError);
   }
 
   return (

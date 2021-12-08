@@ -25,8 +25,9 @@ function Search() {
   };
 
   const search = () => {
+    const abortController = new AbortController();
     if (phone) {
-      searchReservations(phone)
+      searchReservations(phone, abortController.signal)
         .then(setResults)
         .then(() => setRefresh(false))
         .then(() => setDisplay(true))
