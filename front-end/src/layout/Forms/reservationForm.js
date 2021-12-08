@@ -11,6 +11,7 @@ export default function ReservationForm({
   const history = useHistory();
 
   const [formData, setFormData] = useState({ ...initialState });
+  const [error, setError] = useState(null);
 
   function updateFormData(){
     setFormData({...initialState});
