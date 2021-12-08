@@ -1,47 +1,39 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { createReservation } from "../../utils/api";
 import ErrorAlert from "../ErrorAlert";
+import { useEffect } from "react";
 
-export default function ReservationForm() {
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    mobile_number: "",
-    reservation_date: "",
-    reservation_time: "",
-    people: "",
-  });
-
-  const [error, setError] = useState(null);
+export default function ReservationForm({
+  handleSubmit,
+  initialState,
+}) {
 
   const history = useHistory();
+
+  const [formData, setFormData] = useState({ ...initialState });
+
+  function updateFormData(){
+    setFormData({...initialState});
+  }
+
+  useEffect(updateFormData, [initialState]);
+
+  const handleInputChange = ({ target }) => {
+    setFormData({
+      ...formData,
+      [target.name]:
+        target.name === "people" ? Number(target.value) : target.value,
+    });
+  };
 
   const handleRedirect = () => {
     return history.goBack();
   };
 
-  function handleInputChange(event) {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    createReservation({
-      data: { ...formData, people: Number(formData.people) },
-    })
-      .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
-      .catch(setError);
-  }
-
   return (
     <>
-      <h1>Create Reservations</h1>
       <ErrorAlert error={error} />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(event) => handleSubmit(event, formData)}>
         <div className="form-group">
           <label for="firstName">First Name</label>
           <input
@@ -50,6 +42,7 @@ export default function ReservationForm() {
             className="form-control"
             id="firstName"
             placeholder="First Name"
+            value={formData.first_name}
             onChange={handleInputChange}
             required
           ></input>
@@ -60,6 +53,7 @@ export default function ReservationForm() {
             className="form-control"
             id="lastName"
             placeholder="Last Name"
+            value={formData.last_name}
             onChange={handleInputChange}
             required
           ></input>
@@ -71,6 +65,7 @@ export default function ReservationForm() {
             className="form-control"
             id="mobileNumber"
             placeholder="Mobile Number"
+            value={formData.mobile_number}
             onChange={handleInputChange}
             required
           ></input>
@@ -80,6 +75,7 @@ export default function ReservationForm() {
             type="date"
             className="form-control"
             id="reservationDate"
+            value={formData.reservation_date.substring(0, 10)}
             onChange={handleInputChange}
             required
           ></input>
@@ -89,6 +85,7 @@ export default function ReservationForm() {
             type="time"
             className="form-control"
             id="reservationTime"
+            value={formData.reservation_time}
             onChange={handleInputChange}
             required
           ></input>
@@ -104,7 +101,7 @@ export default function ReservationForm() {
             required
           ></input>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mr-2">
           Submit
         </button>
         <button
