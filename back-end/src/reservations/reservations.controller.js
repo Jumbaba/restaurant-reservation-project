@@ -144,6 +144,7 @@ async function create(req, res, next) {
 }
 
 async function updateStatus(req, res, next) {
+  
   const { status } = req.body.data;
   const { reservation_id } = req.params;
 

@@ -7,17 +7,6 @@ export default function ReservationsTable({
   setReservationsError,
 }) {
 
-  // const cancelRes = (event) => {
-  //   const cancelConfirm = window.confirm("Do you want to cancel this reservation?\n\nThis cannot be undone.");
-
-  //   if (cancelConfirm) {
-  //     updateStatus(reservation.reservation_id, { status: 'cancelled' })
-  //       .then(loadDashboard)
-  //       .catch(setReservationsError);
-  //   }
-
-  // }
-
   function cancelRes({ target }) {
 
     const reservationId = target.dataset.reservationIdCancel;
@@ -60,7 +49,7 @@ export default function ReservationsTable({
               {reservation.status}
             </td>
             <td>
-              {reservation.status == "booked" ? (
+              {reservation.status === "booked" ? (
                 <Link to={`/reservations/${reservation.reservation_id}/seat`}>
                   <button className="btn btn-secondary">Seat</button>
                 </Link>
