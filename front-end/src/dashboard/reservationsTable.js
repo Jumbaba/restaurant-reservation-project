@@ -57,13 +57,13 @@ export default function ReservationsTable({
             </td>
             <td>
               <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-                <button className="btn btn-warning">Edit</button>
+                <button className="btn btn-secondary">Edit</button>
               </Link>
             </td>
             <td>
               <button
                 type="button"
-                className="btn btn-danger mr-2"
+                className="btn btn-danger"
                 onClick={cancelRes}
                 data-reservation-id-cancel={reservation.reservation_id}
               >
