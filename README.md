@@ -30,7 +30,7 @@ End-to-end tests use browser automation to interact with the application just li
 
 ## Summary
 
-This application is for restaurant owners that want a quick and easy to use system that can keep track of their reservations and available tables.
+This application is for restaurant owners that want a quick and easy to use system that can keep track of their reservations and tables.
 
 ![Dashboard](https://user-images.githubusercontent.com/87444494/145303192-81f5c121-c02d-4303-a76f-fceaaba5aae2.jpg)
 
@@ -43,5 +43,31 @@ To make a new reservation click on the "New Reservation" button in the top left 
 The form is simple to use and will warn you if you try to submit without filling in all the required fields.
 
 If you need to make a change to a reservation that already exists, then all you need to do is click the "Edit" button on the dashboard which corresponds to that reservation. This will load up the edit page which should look pretty familiar because it is the same form you used to create a reservation with the only difference being all of the fields are already filled in with the information you saved previously. Of course you can cancel a reservation at any time by hitting the red "Cancel" button and that will set the reservation status to cancelled.
+
+You'll also probably want to add tables that you can use to seat customers. In order to add tables, just click on the "New Table" button on the dashboard and that will open up form where you just need to fill out the name and how many people that table can seat.
+
+![CreateTable](https://user-images.githubusercontent.com/87444494/145305792-6afc5c10-9155-4fe0-95e9-ec4708d372f7.jpg)
+
+## API
+
+POST /reservations adds a new reservation
+
+GET /reservations/:reservations_id returns the reservation with the corresponding id
+PUT /reservations/:reservations_id updates the reservation with new information
+
+GET /:reservation_id/status returns the reservation with the corresponding id
+PUT /:reservation_id/status updates the reservation status
+
+GET /tables returns all of the tables
+POST /tables adds a new table
+
+PUT /:tableId/seat changes the reservation status to seated and saves the reservation id to the table
+DELETE /:tableId/seat changes the reservation status to finished and removes the reservation id from the table
+
+
+
+
+
+
 
 
