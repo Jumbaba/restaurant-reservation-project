@@ -73,7 +73,7 @@ function Search() {
         <div>
           <button
             type="button"
-            className="btn btn-secondary mr-2"
+            className="btn btn-danger mr-2"
             onClick={cancelHandler}
           >
             Cancel

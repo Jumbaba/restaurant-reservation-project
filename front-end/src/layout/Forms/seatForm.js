@@ -5,13 +5,13 @@ import ErrorAlert from "../ErrorAlert";
 
 const SeatForm = () => {
   const history = useHistory();
-  
+
   const [tables, setTables] = useState([]);
   const [tableId, setTableId] = useState(0);
-  
+
   const [error, setError] = useState(null);
   const { reservation_id } = useParams();
-  
+
   useEffect(loadTables, []);
 
   function loadTables() {
@@ -23,7 +23,7 @@ const SeatForm = () => {
   const handleRedirect = () => {
     return history.goBack();
   };
-  
+
   const handleInputChange = ({ target }) => {
     setTableId(Number(target.value));
   };
@@ -69,10 +69,11 @@ const SeatForm = () => {
             <button
               onClick={handleRedirect}
               type="button"
+              className="btn btn-danger mr-2"
             >
               Cancel
             </button>
-            <button type="submit">
+            <button type="submit" className="btn btn-secondary">
               Submit
             </button>
           </div>

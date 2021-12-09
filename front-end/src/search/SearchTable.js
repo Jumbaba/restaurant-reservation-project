@@ -30,20 +30,7 @@ function SearchTable({ reservation, setError, setRefresh }) {
         <th>Date: {reservation.reservation_date.slice(0, 10)}</th>
         <th>Time: {reservation.reservation_time}</th>
         <th>Size: {reservation.people}</th>
-        <th>
-          Status:{" "}
-          <span
-            style={
-              reservation.status === "finished"
-                ? { color: "red", textTransform: "capitalize" }
-                : reservation.status === "booked"
-                ? { color: "green", textTransform: "capitalize" }
-                : { color: "#333", textTransform: "capitalize" }
-            }
-          >
-            {reservation.status}
-          </span>
-        </th>
+        <th>Status: {reservation.status}</th>
       </thead>
       <div>
         <button
@@ -52,8 +39,8 @@ function SearchTable({ reservation, setError, setRefresh }) {
           className={
             reservation.status === "finished" ||
             reservation.status === "cancelled"
-              ? "search__resultBtn disabledBtn"
-              : "search__resultBtn btn-danger"
+              ? "disabledBtn btn btn-danger mr-2 mt-2"
+              : "btn btn-danger mr-2 mt-2"
           }
           disabled={
             reservation.status === "finished" ||
@@ -69,8 +56,8 @@ function SearchTable({ reservation, setError, setRefresh }) {
             className={
               reservation.status === "finished" ||
               reservation.status === "cancelled"
-                ? "search__resultBtn disabledBtn"
-                : "search__resultBtn btn-warning"
+                ? "disabledBtn btn btn-secondary mr-2 mt-2"
+                : "btn btn-secondary mt-2"
             }
             disabled={
               reservation.status === "finished" ||

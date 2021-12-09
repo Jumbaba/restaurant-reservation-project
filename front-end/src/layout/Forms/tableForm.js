@@ -66,12 +66,12 @@ export default function TableForm() {
             onChange={handleInputChange}
             required
           ></input>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary mr-2 mt-2">
             Submit
           </button>
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary mt-2"
             onClick={handleRedirect}
           >
             Cancel
