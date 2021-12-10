@@ -53,6 +53,7 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
+      <div className="d-md-flex m-3">
 
       <button
         className="btn btn-success mr-2 mb-1"
@@ -75,12 +76,15 @@ function Dashboard({ date }) {
       >
         Next
       </button>
+      </div>
 
       <ErrorAlert error={reservationsError} />
+      <div className="reservation_table">
       <ReservationsTable
         reservations={reservations}
         loadDashboard ={loadDashboard}
       />
+      </div>
       <Tables
         onFinish={onFinish}
         tables={tables}
