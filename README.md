@@ -77,6 +77,10 @@ If you have trouble getting the server to run, reach out for assistance.
 This project has unit, integration, and end-to-end (e2e) tests.
 End-to-end tests use browser automation to interact with the application just like the user does.
 
+## Made with
+
+JavaScript and HTML
+
 
 
 
