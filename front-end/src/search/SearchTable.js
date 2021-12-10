@@ -21,6 +21,7 @@ function SearchTable({ reservation, setError, setRefresh }) {
   };
 
   return (
+    <div className="table-responsive-md">
     <table className="table" key={reservation.reservation_id}>
       <thead>
         <tr className="search-head"></tr>
@@ -71,6 +72,7 @@ function SearchTable({ reservation, setError, setRefresh }) {
         </Link>
       </div>
     </table>
+    </div>
   );
 }
 
